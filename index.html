@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dedicated Worker example</title>
+    <style>
+    body{
+        background-color: aquamarine;
+    }
+    div{
+        width: 60%;
+        margin-right: auto;
+        margin-left:auto;
+
+    }
+    label,input {
+        margin:10px;
+    }
+    button, div{
+        margin:10px;
+    }
+    </style>
+</head>
+<body>
+    <div>
+        <form action="">
+            <h1> Multiply Two Numbers</h1>
+            <label for="number1">First Number: </label>
+            <input type="text" id="number1" placeholder="enter first number" value=""><br>
+            <label for="number1">Second Number: </label>
+            <input type="text" id="number2" placeholder="enter first number" value=""><br>
+            <div >Answer : <span id="results">0</span></div>
+            <input type="submit" id="submit" value="multiply ">
+        </form>
+    </div>
+    <script>
+        const valOne = document.querySelector('#number1')
+        const valTwo = document.querySelector('#number2')
+        const results = document.querySelector('#results');
+         if(!window.Worker){
+             console.log('Your browser does not support service worker')
+         }
+         const myWorker = new Worker('worker.js');
+
+        document.querySelector("#submit").addEventListener('click', function(e){
+            e.preventDefault();
+            myWorker.postMessage({valueOne:valOne.value, valueTwo:valTwo.value});
+            myWorker.addEventListener('message',function(e){
+            results.textContent = e.data;
+            })
+        })
+    </script>
+</body>
+</html>
